@@ -3,22 +3,63 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
 }
+:root{
+  --font-base: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --font-head: 'Poppins', var(--font-base);
+  --text-color: #333333;
+  --muted: #666666;
+  --brand: #186a86;
+}
 
+/* Base typography */
+html { font-size: 16px; } /* base */
 body {
-  background-color: #f9f9f9;
-  color: #333;
+  font-family: var(--font-base);
+  color: var(--text-color);
+  font-weight: 400;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Headings */
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  color: #16384a;
+  margin: 0 0 .6rem 0;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+h1 { font-size: clamp(1.6rem, 2.2rem + 1vw, 2.8rem); font-weight:700; }
+h2 { font-size: clamp(1.3rem, 1.8rem + 0.8vw, 2.0rem); font-weight:700; }
+h3 { font-size: clamp(1.05rem, 1.2rem + 0.6vw, 1.25rem); font-weight:600; }
+
+/* UI elements */
+button, .btn, .menu-toggle {
+  font-family: var(--font-head);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Small text adjustments */
+.lead { color: var(--muted); font-size: 1.05rem; }
+p { margin-bottom: .9rem; color: var(--text-color); }
+
+/* Responsivity: slightly larger body font on big screens */
+@media (min-width: 1200px) {
+  html { font-size: 17px; }
+}
+
+
 /* ================= HEADER ================= */
 /* ====== HEADER REWORK ====== */
+.brand { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; }
 .site-header {
   position: relative; /* laisse défiler avec la page */
   background-color: #186a86;
@@ -133,6 +174,19 @@ body {
   .menu-toggle { display: block; }
   /* reduce header inner spacing on mobile */
   .header-inner { padding: 6px 6px; }
+}
+
+/* place le burger à droite et empêche qu'il se centre */
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Dans le flux flex, force le bouton burger à se pousser à droite */
+.menu-toggle {
+  margin-left: auto; /* pousse le burger vers la droite */
+  display: none;     /* reste caché sur desktop, visible via media queries */
 }
 
 /* small tweak: ensure header elements don't take too much vertical space */
@@ -352,6 +406,36 @@ body {
 .modal-item .service-image img { width: 80%; height: auto; border-radius: 8px; object-fit: cover; }
 .modal-item .service-text { flex: 1; }
 
+/* Remettre les bullets et l'espacement dans le modal */
+.modal-item ul {
+  list-style: disc inside;
+  margin: 0.6rem 0 0.8rem 0; /* top/right/bottom/left */
+  padding-left: 1rem;       /* espace pour la liste */
+  color: inherit;           /* prend la couleur du conteneur, utile pour bg-blue */
+  line-height: 1.5;
+}
+
+/* Si le fond est sombre (bg-blue), forcer la couleur des markers (pour navigateurs modernes) */
+.modal-item.bg-blue,
+.modal-item.bg-blue ul,
+.modal-item.bg-blue p,
+.modal-item.bg-blue li {
+  color: #fff;
+}
+
+/* ::marker pour bullet color (meilleure prise en charge moderne) */
+.modal-item.bg-blue li::marker {
+  color: #fff;
+}
+
+/* donne plus d'espace entre paragraphes et listes */
+.modal-item p,
+.modal-item ul,
+.modal-item ol {
+  margin-bottom: 0.9rem;
+}
+
+
 /* mobile modal items */
 @media (max-width: 900px) {
   .modal-item, .modal-item.reverse { flex-direction: column; }
@@ -379,6 +463,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  flex-wrap: wrap; /* permet à l'image de descendre sous le titre sur petits écrans */
 }
 .apro-top h2 {
   font-size: 2.1rem;
@@ -389,6 +474,9 @@ body {
   color: rgba(255,255,255,0.92);
   font-size: 1.02rem;
   max-width: 720px;
+}
+.apro-hero-image {
+  flex: 0 0 auto;
 }
 .apro-hero-image img {
   width: 200px;
@@ -435,7 +523,7 @@ body {
 /* mission/vision grid */
 .mv-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -444,6 +532,10 @@ body {
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(13,42,57,0.03);
+  min-width: 0;               /* permet au texte de s'enrouler proprement */
+  word-break: normal;
+  white-space: normal;
+  line-height: 1.45;
 }
 .mv-item h3 { color: #16384a; margin-bottom: 8px; }
 
@@ -510,6 +602,8 @@ body {
   .apro-top h2 { font-size: 1.45rem; }
   .apro-hero-image { display:none; }
   .mini-gallery img { height:90px; }
+  .apro-hero-image img { width: 140px; }
+  .apro-top { align-items: flex-start; }
 }
 
 
@@ -517,6 +611,7 @@ body {
 @media (max-width: 900px) {
   .mv { flex-direction: column; }
   .stats { gap: 12px; }
+  .mv-grid { grid-template-columns: 1fr; }
 }
 
 /* ================= CONTACT ================= */
@@ -584,4 +679,13 @@ footer {
   .hero-content h1 { font-size: 1.8rem; }
   .hero-content h2 { font-size: 1rem; }
   .hero-content p { font-size: 0.95rem; }
+}
+
+/* Accessible visually-hidden (screen-reader only) */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
 }
