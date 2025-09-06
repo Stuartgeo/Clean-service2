@@ -43,8 +43,7 @@ body {
   text-decoration: none;
 }
 
-.logo { height: 36px; width: auto; display:block; }
-.brand { font-size: 18px; color: #fff; margin: 0; font-weight: 800; }
+.logo { height: 37px; width: auto; display:block; }
 
 /* Nav desktop */
 .main-nav ul {
